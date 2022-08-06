@@ -1,0 +1,38 @@
+
+sort= [20,90,30,10,0,-1]
+
+for x in range (1, len(sort)):
+   insert = sort[x]
+   current = x-1
+   while (sort[current]> insert) and (current>-1):
+      sort[current+1] = sort[current]
+      current -=1
+      sort[current+1] = insert
+      print (sort)
+
+##
+print(""*5)
+nums=[20,90,30,10,0,-1]
+
+maxindex=len(nums)
+print("There are", maxindex, "numbers")
+
+n=maxindex-1
+
+nomoreswaps= "0"
+
+while nomoreswaps == "0":
+  for i in range (maxindex - 1):
+   for j in range (n):
+     if nums[j]>nums[j+1]:
+       temp=nums[j]
+       nums[j]=nums[j+1]
+       nums[j+1]=temp
+       nomoreswaps="1"
+       print (nums)
+       if not nomoreswaps:
+         break
+         n=n-1
+         
+  print ("Final List in Ascending order is ->", nums)
+
