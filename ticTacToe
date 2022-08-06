@@ -1,0 +1,101 @@
+def inti():
+ global display
+ display = ["#","1","2","3","4","5","6","7","8","9"]
+def show (display):
+   print ("|"+"-----"+ "|")
+   print ("|"+display[7]+"|"+display[8]+"|"+display[9]+ "|")
+   print ("|"+"====="+ "|")
+   print ("|"+display[4]+"|"+display[5]+"|"+display[6]+ "|")
+   print ("|"+"====="+ "|")
+   print ("|"+display[1]+"|"+display[2]+"|"+display[3]+ "|")
+   print ("|"+"-----"+ "|")
+
+def enter():
+ global p1
+ global p2
+ p1= input("enter a letter for p1 (x or o): ")
+ while (p1 != "x") and (p1 != "o"):
+   p1= input("please enter valid input: ")
+ if p1=="x":
+    p2="o"
+ if p1=="o":
+   p2="x"
+
+ print (f"player 1  is {p1}")
+ print (f"player 2 is {p2}")
+
+def which(a,q1,q2):
+  if a == q1:
+    print ("p1 is winner")
+  else:
+    print("p2 is winner")
+
+def winner (table,py1,py2):
+  global win
+  win = False
+  if (table[1] == table[2]==table[3]):
+    which(table[1],py1,py2)
+    win = True
+  if (table[1]== table[4]== table[7]):
+    which(table[1],py1,py2)
+    win = True
+  if (table[1]==table[5]==table[9]):
+    which(table[1],py1,py2)
+    win = True 
+  if (table[2]==table[5]==table[8]):
+    which(table[2],py1,py2)
+    win = True
+  if (table[3]==table[6]==table[9]):
+    which(table[3],py1,py2)
+    win = True
+  if (table[4]==table[5]==table[6]):
+    which(table[4],py1,py2)
+    win = True
+  if (table[7]==table[8]==table[9]):
+    which(table[7],py1,py2)
+    win = True
+  if (table[3]==table[5]==table[7]):
+    which(table[3],py1,py2)
+    win = True
+  return win
+def empty(array):
+  spots=[]
+  for items in array[1:]:
+    if items != "x" and items != "o":
+      spots.append(array.index(items))
+  return list(spots)
+def clear():
+  print("\n"*100)
+
+
+play= True
+while play:
+  enter()
+  inti()
+  show (display)
+  winner(display,p1,p2)
+  while win == False:
+    spoots= empty(display)
+    print (f"these are the empty spots: ")
+    print(spoots)
+    player1= int(input("enter the number where u want to place p1: "))
+    while (player1 not in spoots) and (len(spoots)>=1):
+      player1 = int(input("enter a valid spot p1: "))
+    display[player1] = p1
+    show(display)
+    winner(display,p1,p2)
+    if not win:
+     player2= int(input("enter the number where u want to place p2: "))      
+     while (player2 not in spoots) or (player2 == player1):
+       player2 = int(input("enter a valid spot p2: "))
+     display[player2] = p2
+     show(display)
+     winner(display,p1,p2)
+    if len(spoots)==0:
+      print("rabita uniq")
+  cont= input(("do u want to continue yes or no: "))
+  if cont == "yes":
+    play = True
+  else:
+    play = False
+    print("thx 4 playin' ")
