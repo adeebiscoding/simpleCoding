@@ -1,0 +1,79 @@
+# simple code for a library
+import datetime
+class libraryitem:
+  def __init__(self,t,a,i):
+    self.title=t
+    self.author=a
+    self.itemid=i
+    self.onloan=False
+    self.duedate=datetime.date.today()
+
+  def gettitle(self):
+    return(self.title)
+  
+  def borrowing(self):
+    self.onloan = True
+    self.duedate += datetime.timedelta(weeks=3)
+
+  def returning(self):
+    self.onloan = False
+
+  def printdetails(self):
+    print(self.title, ";", self.author)
+    print(self.itemid, ";", self.onloan, ";", self.duedate)
+
+class book(libraryitem):
+    def __init__(self,t,a,i):
+     libraryitem.__init__(self,t,a,i)
+     self.isrequested = False
+     self.requestedby = 0
+
+    def getisrequested(self):
+     return self.isrequested
+
+    def setisrequested(self):
+     self.isrequested = True
+    
+class CD(libraryitem):
+  def __init__(self,t,a,i):
+     libraryitem.__init__(self,t,a,i)
+     self.genre = " "
+
+  def getgenre (self):
+    return self.genre
+  
+  def setgenre(self,g):
+    self.genre=g
+
+cd1 = CD("title1", "Artist1", 5)
+cd2 = CD("title2", "Artist2", 6)
+
+d = {"title6":book("title6", "Author5", 19),"title4" : book("title4", "Author2", 8),"title5" : book("title5", "Author3", 9),"title7" : book("title7", "Author4", 10),"title8" : book("title8", "Author5", 15)}
+
+print("{0:^10} | {1:^10} | {2:^10} | {3:^10} | {4:^10}".format("title","Author", "copies", "lended", "Due Date"))
+
+print("{0:^10} | {0:^10} | {0:^10} | {0:^10} | {0:^10}".format("--------"))
+
+for key, value in d.items():
+  print("{0:^10} | {1:^10} | {2:^10} | {3:^10} | {4}".format(value.title,value.author, value.itemid, value.onloan, value.duedate))
+
+def borrow(book_name, dictionary):
+  try: 
+   instance= ([value for key ,value in dictionary.items() if key == book_name.lower()])
+   if instance[0].isrequested== False:
+    print("Book added to ur cart")
+    instance[0].setisrequested()
+   else:
+    print ("this book has already been requested")
+  except:
+
+    print("Book not found.")
+
+while True:
+  book_name = input("Enter book title: ")
+  borrow(book_name,d)
+  choice = (input("Do you wich to continue: ")).lower()[0]
+  if choice != "y":
+    break
+
+print("Thank u for visiting!!!")
