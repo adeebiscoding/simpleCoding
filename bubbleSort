@@ -1,0 +1,19 @@
+mylist=[]
+length= int(input("Enter the number of elements in array: "))
+print("enter values: ")
+for x in range (length):
+  mylist.append(int(input()))
+noswap = False
+passnum = 0
+n = length-1
+while noswap == True:
+   for m in range (n):
+     if mylist[m]> mylist[m+1]:
+       mylist[m], mylist[m+1]= mylist[m+1], mylist[m]
+       noswap = False
+     else:
+       noswap = True
+   n = n -1 
+   passnum = passnum + 1
+   print ("pass ", passnum,":")
+   print(mylist)
