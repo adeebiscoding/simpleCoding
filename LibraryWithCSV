@@ -1,0 +1,85 @@
+# creating a library program with a backend database
+
+import datetime
+import pandas
+from difflib import get_close_matches
+
+class libraryitem:
+  def __init__(self,t,a,i):
+    self.title=t
+    self.author=a
+    self.copies=i
+    self.onloan=False
+    self.duedate=datetime.date.today()
+
+  def gettitle(self):
+    return(self.title)
+  
+  def borrowing(self):
+    self.onloan = True
+    self.duedate += datetime.timedelta(weeks=3)
+
+  def returning(self):
+    self.onloan = False
+
+  def printdetails(self):
+    print(self.title, ";", self.author)
+    print(self.copies, ";", self.onloan, ";", self.duedate)
+
+class book(libraryitem):
+    def __init__(self,t,a,i):
+     libraryitem.__init__(self,t,a,i)
+     self.isrequested = False
+     self.requestedby = 0
+
+    def getisrequested(self):
+     return self.isrequested
+
+    def setisrequested(self):
+     self.isrequested = True
+
+
+
+df = pandas.read_csv("books.csv")
+
+d = {"first":book("first", "Author5", df.iloc[0,1]),"second" : book("second", "Author2", df.iloc[1,1]),"third" : book("third", "Author3",df.iloc[2,1]),"fourth" : book("fourth", "Author4",df.iloc[3,1]),"fifth" : book("fifth", "Author5", df.iloc[4,1])}
+
+
+
+print("{0:^10} | {1:^10} | {2:^10} | {3:^10} ".format("title","Author", "copies", "lended"))
+
+print("{0:^10} | {0:^10} | {0:^10} | {0:^10} ".format("--------"))
+
+for key, value in d.items():
+  print("{0:^10} | {1:^10} | {2:^10}".format(value.title,value.author, value.copies))
+
+
+def borrow(book_name, dictionary, books_taken):
+  try: 
+   book= get_close_matches(book_name, dictionary.keys(),1)
+   instance= ([value for key ,value in dictionary.items() if key == book[0].lower()])
+   if instance[0].copies<1:
+     print("All copies have been requested :(")
+   elif instance[0].isrequested== False:
+    print("Book added to ur cart")
+    books_taken.append(instance[0].gettitle())
+    instance[0].setisrequested()
+    df.loc[df["title"]==instance[0].gettitle(), "copies"]-=1
+    df.to_csv("books.csv", index=False)
+   else:
+    print ("Book has been requested already...")
+  except:
+    print("Book not found.")
+
+
+books_taken=[]
+while True:
+  book_name = input("Enter book title: ")
+  borrow(book_name,d, books_taken)
+  choice = (input("Do you wich to continue: ")).lower()[0]
+  if choice != "y":
+    break
+
+print(books_taken)
+
+print("Thank u for visiting!!!")
